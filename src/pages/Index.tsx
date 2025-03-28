@@ -1,12 +1,33 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import Header from '@/components/Header';
+import ChatInterface from '@/components/ChatInterface';
+import QuizMode from '@/components/QuizMode';
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState('chat');
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex flex-col bg-brand-lightGray">
+      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      
+      <main className="flex-1 container mx-auto p-4">
+        <div className="ai-assistant-container max-w-4xl">
+          {activeTab === 'chat' ? (
+            <ChatInterface />
+          ) : (
+            <div className="chat-container">
+              <QuizMode />
+            </div>
+          )}
+        </div>
+      </main>
+      
+      <footer className="border-t py-4 text-center text-sm text-muted-foreground">
+        <div className="container mx-auto">
+          <p>© {new Date().getFullYear()} EduAssist AI · Your Professional Learning Assistant</p>
+        </div>
+      </footer>
     </div>
   );
 };
