@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import FileUploader from './FileUploader';
+import { generateGeminiResponse, GeminiMessage } from '@/lib/gemini-api';
 
 interface Message {
   id: string;
@@ -17,7 +18,7 @@ const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hello! I'm EduAssist AI, your personal learning assistant. How can I help you today?",
+      content: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?",
       sender: 'ai',
       timestamp: new Date(),
     },
@@ -47,34 +48,35 @@ const ChatInterface: React.FC = () => {
     setInput('');
     setIsLoading(true);
 
-    // Simulate AI response delay
-    setTimeout(() => {
-      const aiResponse = generateAIResponse(input);
+    try {
+      // Convert chat history to Gemini format
+      const geminiMessages: GeminiMessage[] = [
+        {
+          role: "user",
+          parts: [{ text: "You are BinesAI, a helpful and professional learning assistant. Respond to the following query: " + input }]
+        }
+      ];
+      
+      // Call Gemini API
+      const aiResponseText = await generateGeminiResponse(geminiMessages);
+      
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: aiResponse,
+        content: aiResponseText,
         sender: 'ai',
         timestamp: new Date(),
       };
+      
       setMessages((prev) => [...prev, aiMessage]);
+    } catch (error) {
+      console.error("Error generating response:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate response. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1500);
-  };
-
-  const generateAIResponse = (userInput: string): string => {
-    // This is a placeholder. In a real app, you would call an AI API here.
-    const lowerInput = userInput.toLowerCase();
-    
-    if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
-      return "Hello there! How can I assist with your learning today?";
-    } else if (lowerInput.includes('help')) {
-      return "I'm here to help! You can ask me questions, upload documents for analysis, or try the quiz mode to test your knowledge.";
-    } else if (lowerInput.includes('thank')) {
-      return "You're welcome! Is there anything else you'd like to learn about?";
-    } else if (lowerInput.includes('learn') || lowerInput.includes('study')) {
-      return "That's great! What subject or topic would you like to focus on? I can provide explanations, resources, or create a quiz to test your knowledge.";
-    } else {
-      return "I understand you're asking about " + userInput + ". While I'm currently running in demo mode with limited responses, in the full version I would provide a comprehensive answer based on the latest educational resources and research.";
     }
   };
 
@@ -113,7 +115,7 @@ const ChatInterface: React.FC = () => {
             className={`flex ${message.sender === 'ai' ? 'items-start' : 'items-start justify-end'} mb-4 fade-in`}
           >
             {message.sender === 'ai' && (
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-brand-blue to-brand-teal text-white mr-2">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-brand-purple to-brand-blue text-white mr-2">
                 <Bot size={18} />
               </div>
             )}
@@ -133,7 +135,7 @@ const ChatInterface: React.FC = () => {
         
         {isLoading && (
           <div className="flex items-start fade-in">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-brand-blue to-brand-teal text-white mr-2">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-brand-purple to-brand-blue text-white mr-2">
               <Bot size={18} />
             </div>
             <div className="message-ai typing-animation shadow-sm">

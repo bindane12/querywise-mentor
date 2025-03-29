@@ -20,6 +20,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
+				ovo: ['Ovo', 'serif'],
 				inter: ['Inter', 'system-ui', 'sans-serif'],
 			},
 			colors: {

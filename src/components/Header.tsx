@@ -16,8 +16,8 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
           <div className="bg-gradient-to-r from-brand-purple to-brand-blue p-1.5 rounded-lg">
             <Book className="h-5 w-5 text-white" />
           </div>
-          <h1 className="text-xl font-bold bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-transparent">
-            EduAssist AI
+          <h1 className="text-xl font-bold bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-transparent font-ovo">
+            BinesAI
           </h1>
         </div>
         

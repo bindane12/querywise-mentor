@@ -12,7 +12,7 @@ const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 font-inter">
+    <div className="min-h-screen flex flex-col bg-slate-50 font-ovo">
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
       
       {/* Sidebar overlay */}
@@ -61,7 +61,7 @@ const Index = () => {
       
       <footer className="border-t py-4 text-center text-sm text-muted-foreground bg-white">
         <div className="container mx-auto">
-          <p>© {new Date().getFullYear()} EduAssist AI · Your Professional Learning Assistant</p>
+          <p>© {new Date().getFullYear()} BinesAI · Your Professional Learning Assistant</p>
         </div>
       </footer>
     </div>

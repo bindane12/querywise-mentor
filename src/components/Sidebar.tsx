@@ -1,10 +1,11 @@
 
 import React, { useState } from 'react';
-import { BookOpen, Cpu, Clock, X, MessageSquare, FileQuestion } from 'lucide-react';
+import { BookOpen, Cpu, Clock, X, MessageSquare, FileQuestion, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 type ChatHistoryItem = {
   id: string;
@@ -20,7 +21,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActiveTab }) => {
-  const [activeModel, setActiveModel] = useState('gpt-4o-mini');
+  const [activeModel, setActiveModel] = useState('gemini-flash');
   const mockChatHistory: ChatHistoryItem[] = [
     { id: '1', title: 'Learning Python Basics', timestamp: new Date(Date.now() - 3600000) },
     { id: '2', title: 'Machine Learning Concepts', timestamp: new Date(Date.now() - 86400000) },
@@ -29,11 +30,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
   
   return (
     <div className={cn(
-      "fixed inset-y-0 left-0 z-30 w-72 bg-white border-r shadow-lg transform transition-transform duration-300 ease-in-out",
+      "fixed inset-y-0 left-0 z-30 w-72 bg-white border-r shadow-lg transform transition-transform duration-300 ease-in-out font-ovo",
       isOpen ? "translate-x-0" : "-translate-x-full"
     )}>
       <div className="flex items-center justify-between p-4 border-b">
-        <h2 className="text-lg font-semibold text-brand-purple">EduAssist AI</h2>
+        <h2 className="text-lg font-semibold text-brand-purple">BinesAI</h2>
         <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-gray-100">
           <X className="h-5 w-5" />
         </Button>
@@ -76,23 +77,30 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
             variant="ghost" 
             className={cn(
               "w-full justify-start",
-              activeModel === 'gpt-4o-mini' ? "bg-brand-blue/10 text-brand-blue" : ""
+              activeModel === 'gemini-flash' ? "bg-brand-blue/10 text-brand-blue" : ""
             )}
-            onClick={() => setActiveModel('gpt-4o-mini')}
+            onClick={() => setActiveModel('gemini-flash')}
           >
             <Cpu className="mr-2 h-4 w-4" />
-            GPT-4o Mini
+            Gemini Flash 2.0
           </Button>
           <Button 
             variant="ghost" 
-            className={cn(
-              "w-full justify-start",
-              activeModel === 'gpt-4o' ? "bg-brand-blue/10 text-brand-blue" : ""
-            )}
-            onClick={() => setActiveModel('gpt-4o')}
+            disabled
+            className="w-full justify-start opacity-60"
           >
-            <Cpu className="mr-2 h-4 w-4" />
+            <Lock className="mr-2 h-4 w-4" />
+            GPT-4o Mini
+            <Badge variant="outline" className="ml-2 text-xs">Not Available</Badge>
+          </Button>
+          <Button 
+            variant="ghost" 
+            disabled
+            className="w-full justify-start opacity-60"
+          >
+            <Lock className="mr-2 h-4 w-4" />
             GPT-4o
+            <Badge variant="outline" className="ml-2 text-xs">Not Available</Badge>
           </Button>
         </div>
       </div>
