@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Upload, Bot, User, Smile, Paperclip, Image } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -29,7 +28,16 @@ const ChatInterface: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Auto-scroll to the most recent message
+  const formatMessage = (text: string) => {
+    return text.split(/(\*\*.*?\*\*)/).map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        const boldText = part.slice(2, -2);
+        return <strong key={index}>{boldText}</strong>;
+      }
+      return part;
+    });
+  };
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -37,7 +45,6 @@ const ChatInterface: React.FC = () => {
   const handleSendMessage = async () => {
     if (!input.trim()) return;
 
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       content: input,
@@ -49,7 +56,6 @@ const ChatInterface: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Convert chat history to Gemini format
       const geminiMessages: GeminiMessage[] = [
         {
           role: "user",
@@ -57,7 +63,6 @@ const ChatInterface: React.FC = () => {
         }
       ];
       
-      // Call Gemini API
       const aiResponseText = await generateGeminiResponse(geminiMessages);
       
       const aiMessage: Message = {
@@ -95,7 +100,6 @@ const ChatInterface: React.FC = () => {
     
     setShowFileUpload(false);
     
-    // Add an AI message acknowledging the file upload
     const aiMessage: Message = {
       id: Date.now().toString(),
       content: `I've analyzed your document. Here's a summary: ${content.substring(0, 200)}... Would you like me to explain any specific part in more detail?`,
@@ -120,7 +124,9 @@ const ChatInterface: React.FC = () => {
               </div>
             )}
             <div className={`${message.sender === 'ai' ? 'message-ai' : 'message-user'} shadow-sm`}>
-              <p className="whitespace-pre-wrap">{message.content}</p>
+              <p className="whitespace-pre-wrap">
+                {message.sender === 'ai' ? formatMessage(message.content) : message.content}
+              </p>
               <span className="text-xs opacity-50 mt-1 block">
                 {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
