@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -92,15 +94,16 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 }
 
 .ai-assistant-container {
-  @apply h-[calc(100vh-2rem)] mx-auto overflow-hidden;
+  @apply h-[calc(100vh-13rem)] overflow-hidden;
 }
 
 .chat-container {
-  @apply h-full flex flex-col rounded-lg bg-white shadow-md overflow-hidden;
+  @apply h-full flex flex-col rounded-lg bg-white shadow-sm overflow-hidden;
 }
 
 .chat-messages {
@@ -108,15 +111,15 @@
 }
 
 .chat-input-container {
-  @apply border-t p-4;
+  @apply p-2;
 }
 
 .message-ai {
-  @apply bg-brand-blue/10 p-3 rounded-lg rounded-tl-none max-w-[85%] ml-2;
+  @apply bg-gradient-to-br from-brand-blue/5 to-brand-teal/5 p-4 rounded-2xl rounded-tl-none max-w-[85%] ml-2 backdrop-blur-sm border border-brand-blue/10;
 }
 
 .message-user {
-  @apply bg-brand-purple/10 p-3 rounded-lg rounded-tr-none max-w-[85%] ml-auto mr-2;
+  @apply bg-gradient-to-br from-brand-purple/5 to-brand-blue/5 p-4 rounded-2xl rounded-tr-none max-w-[85%] ml-auto mr-2 backdrop-blur-sm border border-brand-purple/10;
 }
 
 .upload-area {
@@ -136,4 +139,39 @@
   0%, 100% { content: '.'; }
   33% { content: '..'; }
   66% { content: '...'; }
+}
+
+/* Fade in animation */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale animation for buttons */
+.scale-hover {
+  transition: transform 0.2s ease;
+}
+
+.scale-hover:hover {
+  transform: scale(1.02);
+}
+
+/* Gradient animation */
+.gradient-animate {
+  background-size: 200% auto;
+  transition: 0.5s;
+}
+
+.gradient-animate:hover {
+  background-position: right center;
 }

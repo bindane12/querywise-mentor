@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Book, FileQuestion, MessageSquare } from 'lucide-react';
+import { Book, MessageSquare, FileQuestion } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface HeaderProps {
@@ -10,20 +10,30 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <header className="border-b bg-white p-4">
+    <header className="border-b bg-white p-4 shadow-sm sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <Book className="h-6 w-6 text-brand-purple" />
-          <h1 className="text-xl font-bold text-brand-purple">EduAssist AI</h1>
+          <div className="bg-gradient-to-r from-brand-purple to-brand-blue p-1.5 rounded-lg">
+            <Book className="h-5 w-5 text-white" />
+          </div>
+          <h1 className="text-xl font-bold bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-transparent">
+            EduAssist AI
+          </h1>
         </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
-          <TabsList>
-            <TabsTrigger value="chat" className="flex items-center gap-1">
+          <TabsList className="bg-gray-100 p-1">
+            <TabsTrigger 
+              value="chat" 
+              className="flex items-center gap-1 data-[state=active]:bg-white data-[state=active]:text-brand-blue"
+            >
               <MessageSquare className="h-4 w-4" />
               <span className="hidden sm:inline">Chat</span>
             </TabsTrigger>
-            <TabsTrigger value="quiz" className="flex items-center gap-1">
+            <TabsTrigger 
+              value="quiz" 
+              className="flex items-center gap-1 data-[state=active]:bg-white data-[state=active]:text-brand-blue"
+            >
               <FileQuestion className="h-4 w-4" />
               <span className="hidden sm:inline">Quiz</span>
             </TabsTrigger>
