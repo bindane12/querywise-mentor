@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import ChatInterface from '@/components/ChatInterface';
+import DeepThinkInterface from '@/components/DeepThinkInterface';
 import QuizMode from '@/components/QuizMode';
 import Sidebar from '@/components/Sidebar';
 import { Menu } from 'lucide-react';
@@ -43,13 +44,16 @@ const Index = () => {
               <Menu className="h-5 w-5" />
             </Button>
             <h1 className="text-2xl font-semibold text-gray-800">
-              {activeTab === 'chat' ? 'Chat Assistant' : 'Quiz Mode'}
+              {activeTab === 'chat' ? 'Chat Assistant' : 
+               activeTab === 'deepthink' ? 'Deep Think' : 'Quiz Mode'}
             </h1>
           </div>
           
           <div className="ai-assistant-container max-w-4xl mx-auto rounded-xl overflow-hidden shadow-lg">
             {activeTab === 'chat' ? (
               <ChatInterface />
+            ) : activeTab === 'deepthink' ? (
+              <DeepThinkInterface />
             ) : (
               <div className="chat-container">
                 <QuizMode />

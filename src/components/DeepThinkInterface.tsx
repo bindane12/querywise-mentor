@@ -1,11 +1,11 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Upload, Bot, User, Smile, Paperclip, Image } from 'lucide-react';
+import { Send, Bot, User, Smile, Paperclip, Image } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import FileUploader from './FileUploader';
-import { generateGeminiResponse, GeminiMessage } from '@/lib/gemini-api';
+import { generateDeepseekResponse } from '@/lib/deepseek-api';
 
 interface Message {
   id: string;
@@ -14,11 +14,11 @@ interface Message {
   timestamp: Date;
 }
 
-const ChatInterface: React.FC = () => {
+const DeepThinkInterface: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?",
+      content: "Hello! I'm Deep Think, powered by Deepseek's advanced AI. I'm designed for deeper, more thoughtful analysis. How can I assist you today?",
       sender: 'ai',
       timestamp: new Date(),
     },
@@ -28,11 +28,8 @@ const ChatInterface: React.FC = () => {
   const [showFileUpload, setShowFileUpload] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const [conversationHistory, setConversationHistory] = useState<GeminiMessage[]>([
-    {
-      role: "assistant",
-      parts: [{ text: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?" }]
-    }
+  const [conversationHistory, setConversationHistory] = useState<{role: "user" | "assistant"; content: string}[]>([
+    {role: "assistant", content: "Hello! I'm Deep Think, powered by Deepseek's advanced AI. I'm designed for deeper, more thoughtful analysis. How can I assist you today?"}
   ]);
 
   const formatMessage = (text: string) => {
@@ -59,20 +56,16 @@ const ChatInterface: React.FC = () => {
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, userMessage]);
-
-    // Add user message to conversation history
-    const userGeminiMessage: GeminiMessage = {
-      role: "user",
-      parts: [{ text: input }]
-    };
-    const updatedHistory = [...conversationHistory, userGeminiMessage];
+    
+    // Update conversation history
+    const updatedHistory = [...conversationHistory, {role: "user", content: input}];
     setConversationHistory(updatedHistory);
     
     setInput('');
     setIsLoading(true);
 
     try {
-      const aiResponseText = await generateGeminiResponse(updatedHistory);
+      const aiResponseText = await generateDeepseekResponse(updatedHistory);
       
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -81,14 +74,8 @@ const ChatInterface: React.FC = () => {
         timestamp: new Date(),
       };
       
-      // Add AI response to conversation history
-      const aiGeminiMessage: GeminiMessage = {
-        role: "assistant",
-        parts: [{ text: aiResponseText }]
-      };
-      
       setMessages((prev) => [...prev, aiMessage]);
-      setConversationHistory([...updatedHistory, aiGeminiMessage]);
+      setConversationHistory([...updatedHistory, {role: "assistant", content: aiResponseText}]);
     } catch (error) {
       console.error("Error generating response:", error);
       toast({
@@ -123,14 +110,8 @@ const ChatInterface: React.FC = () => {
       timestamp: new Date(),
     };
     
-    // Add document summary to conversation history
-    const aiGeminiMessage: GeminiMessage = {
-      role: "assistant",
-      parts: [{ text: aiMessage.content }]
-    };
-    
     setMessages((prev) => [...prev, aiMessage]);
-    setConversationHistory([...conversationHistory, aiGeminiMessage]);
+    setConversationHistory([...conversationHistory, {role: "assistant", content: aiMessage.content}]);
   };
 
   return (
@@ -142,7 +123,7 @@ const ChatInterface: React.FC = () => {
             className={`flex ${message.sender === 'ai' ? 'items-start' : 'items-start justify-end'} mb-4 fade-in`}
           >
             {message.sender === 'ai' && (
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-brand-purple to-brand-blue text-white mr-2">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-purple-700 to-indigo-900 text-white mr-2">
                 <Bot size={18} />
               </div>
             )}
@@ -164,7 +145,7 @@ const ChatInterface: React.FC = () => {
         
         {isLoading && (
           <div className="flex items-start fade-in">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-brand-purple to-brand-blue text-white mr-2">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-purple-700 to-indigo-900 text-white mr-2">
               <Bot size={18} />
             </div>
             <div className="message-ai typing-animation shadow-sm">
@@ -207,7 +188,7 @@ const ChatInterface: React.FC = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask a question or upload a document..."
+              placeholder="Ask Deep Think a question..."
               className="min-h-10 flex-1 resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent"
             />
             
@@ -223,7 +204,7 @@ const ChatInterface: React.FC = () => {
               <Button 
                 onClick={handleSendMessage} 
                 disabled={!input.trim() || isLoading}
-                className="bg-gradient-to-r from-brand-blue to-brand-purple hover:opacity-90 text-white"
+                className="bg-gradient-to-r from-purple-700 to-indigo-900 hover:opacity-90 text-white"
                 size="icon"
               >
                 <Send className="h-4 w-4" />
@@ -236,4 +217,4 @@ const ChatInterface: React.FC = () => {
   );
 };
 
-export default ChatInterface;
+export default DeepThinkInterface;

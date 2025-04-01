@@ -13,16 +13,8 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
     <header className="border-b bg-white p-4 shadow-sm sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="bg-gradient-to-r from-brand-purple to-brand-blue p-1.5 rounded-lg flex items-center justify-center w-10 h-10 overflow-hidden">
-            <iframe 
-              loading="lazy" 
-              className="w-full h-full"
-              src="https://www.canva.com/design/DAGjMHavF-k/doKyln9x0alsMx40ChuXSg/view?embed" 
-              allowFullScreen
-            />
-          </div>
-          <h1 className="text-xl font-bold bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-transparent font-ovo">
-            BinesAI
+          <h1 className="text-xl font-bold bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-transparent font-poppins">
+            Bines AI
           </h1>
         </div>
         
@@ -34,6 +26,13 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             >
               <MessageSquare className="h-4 w-4" />
               <span className="hidden sm:inline">Chat</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="deepthink" 
+              className="flex items-center gap-1 data-[state=active]:bg-white data-[state=active]:text-brand-blue"
+            >
+              <MessageSquare className="h-4 w-4" />
+              <span className="hidden sm:inline">Deep Think</span>
             </TabsTrigger>
             <TabsTrigger 
               value="quiz" 

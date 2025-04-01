@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { BookOpen, Cpu, Clock, X, MessageSquare, FileQuestion, Lock } from 'lucide-react';
+import { BookOpen, Cpu, Clock, X, MessageSquare, FileQuestion } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -58,6 +58,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
             variant="ghost" 
             className={cn(
               "w-full justify-start",
+              activeTab === 'deepthink' ? "bg-purple-700/10 text-purple-700" : ""
+            )}
+            onClick={() => setActiveTab('deepthink')}
+          >
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Deep Think
+          </Button>
+          <Button 
+            variant="ghost" 
+            className={cn(
+              "w-full justify-start",
               activeTab === 'quiz' ? "bg-brand-blue/10 text-brand-blue" : ""
             )}
             onClick={() => setActiveTab('quiz')}
@@ -86,10 +97,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
           </Button>
           <Button 
             variant="ghost" 
+            className={cn(
+              "w-full justify-start",
+              activeModel === 'deepseek' ? "bg-purple-700/10 text-purple-700" : ""
+            )}
+            onClick={() => setActiveModel('deepseek')}
+          >
+            <Cpu className="mr-2 h-4 w-4" />
+            Deepseek R1
+          </Button>
+          <Button 
+            variant="ghost" 
             disabled
             className="w-full justify-start opacity-60"
           >
-            <Lock className="mr-2 h-4 w-4" />
+            <Cpu className="mr-2 h-4 w-4" />
             GPT-4o Mini
             <Badge variant="outline" className="ml-2 text-xs">Not Available</Badge>
           </Button>
@@ -98,7 +120,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
             disabled
             className="w-full justify-start opacity-60"
           >
-            <Lock className="mr-2 h-4 w-4" />
+            <Cpu className="mr-2 h-4 w-4" />
             GPT-4o
             <Badge variant="outline" className="ml-2 text-xs">Not Available</Badge>
           </Button>
