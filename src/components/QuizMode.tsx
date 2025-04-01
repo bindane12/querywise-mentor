@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
-import { Check, X, ChevronRight, RefreshCw, Trophy } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Check, X, ChevronRight, RefreshCw, Trophy, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/components/ui/use-toast';
 import { 
   Select,
   SelectContent,
@@ -13,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { generateGeminiResponse, GeminiMessage } from '@/lib/gemini-api';
 
 interface Question {
   id: string;
@@ -29,8 +31,8 @@ const quizTopics = [
   { id: 'literature', name: 'Literature' },
 ];
 
-// Demo questions - in a real app, these would come from an API based on the selected topic
-const demoQuestions: Question[] = [
+// Fallback questions in case API fails
+const fallbackQuestions: Question[] = [
   {
     id: '1',
     text: 'What is the process by which plants make their own food using sunlight?',
@@ -100,15 +102,76 @@ const QuizMode: React.FC = () => {
   const [hasAnswered, setHasAnswered] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
   
-  // In a real app, we would fetch questions based on the selected topic
-  // For now, we'll just use our demo questions regardless of the topic
-  const questions = demoQuestions;
   const currentQuestion = questions[currentQuestionIndex];
+  
+  // Generate quiz questions using Gemini API when topic changes
+  useEffect(() => {
+    generateQuizQuestions();
+  }, [selectedTopic]);
+  
+  const generateQuizQuestions = async () => {
+    setIsLoading(true);
+    try {
+      const prompt = `Create a quiz with 5 questions about ${selectedTopic}. For each question, provide 4 options (labeled a, b, c, d), indicate the correct answer, and provide a brief explanation. 
+      Format the response as a valid JSON array with the following structure:
+      [
+        {
+          "id": "1",
+          "text": "Question text here",
+          "options": [
+            {"id": "a", "text": "First option"},
+            {"id": "b", "text": "Second option"},
+            {"id": "c", "text": "Third option"},
+            {"id": "d", "text": "Fourth option"}
+          ],
+          "correctOptionId": "a",
+          "explanation": "Explanation of the correct answer"
+        }
+      ]`;
+      
+      const geminiMessages: GeminiMessage[] = [
+        {
+          role: "user",
+          parts: [{ text: prompt }]
+        }
+      ];
+      
+      const response = await generateGeminiResponse(geminiMessages);
+      
+      // Extract JSON from response
+      const jsonMatch = response.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        const parsedQuestions = JSON.parse(jsonMatch[0]);
+        if (Array.isArray(parsedQuestions) && parsedQuestions.length > 0) {
+          setQuestions(parsedQuestions);
+          resetQuiz(parsedQuestions);
+        } else {
+          throw new Error("Invalid question format");
+        }
+      } else {
+        throw new Error("Could not parse questions");
+      }
+    } catch (error) {
+      console.error("Error generating questions:", error);
+      toast({
+        title: "Error generating questions",
+        description: "Using fallback questions instead",
+        variant: "destructive",
+      });
+      setQuestions(fallbackQuestions);
+      resetQuiz(fallbackQuestions);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   const handleTopicChange = (value: string) => {
     setSelectedTopic(value);
-    resetQuiz();
+    // Questions will be generated in the useEffect
   };
   
   const handleOptionSelect = (value: string) => {
@@ -136,7 +199,7 @@ const QuizMode: React.FC = () => {
     }
   };
   
-  const resetQuiz = () => {
+  const resetQuiz = (questionSet: Question[] = []) => {
     setCurrentQuestionIndex(0);
     setSelectedOptionId(null);
     setHasAnswered(false);
@@ -144,10 +207,19 @@ const QuizMode: React.FC = () => {
     setQuizCompleted(false);
   };
   
-  const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const progressPercentage = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
+  
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full p-8">
+        <Loader2 className="h-12 w-12 text-brand-blue animate-spin mb-4" />
+        <p className="text-lg font-medium text-center">Generating questions about {quizTopics.find(topic => topic.id === selectedTopic)?.name || selectedTopic}...</p>
+      </div>
+    );
+  }
   
   if (quizCompleted) {
-    const scorePercentage = (score / questions.length) * 100;
+    const scorePercentage = questions.length > 0 ? (score / questions.length) * 100 : 0;
     
     return (
       <div className="flex flex-col items-center justify-center h-full p-6">
@@ -174,12 +246,34 @@ const QuizMode: React.FC = () => {
           <Progress value={scorePercentage} className="h-2 mb-6" />
           
           <Button 
-            onClick={resetQuiz} 
+            onClick={() => generateQuizQuestions()}
             className="w-full"
           >
             <RefreshCw className="h-4 w-4 mr-2" />
             Try Again
           </Button>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!currentQuestion) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full p-8">
+        <p className="text-lg font-medium text-center">No questions available. Please select a different topic.</p>
+        <div className="mt-6">
+          <Select value={selectedTopic} onValueChange={handleTopicChange}>
+            <SelectTrigger className="w-full sm:w-[240px]">
+              <SelectValue placeholder="Select Topic" />
+            </SelectTrigger>
+            <SelectContent>
+              {quizTopics.map((topic) => (
+                <SelectItem key={topic.id} value={topic.id}>
+                  {topic.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
     );
