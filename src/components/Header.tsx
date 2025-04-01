@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MessageSquare, FileQuestion } from 'lucide-react';
+import { MessageSquare, FileQuestion, Calculator, Code, BookOpen } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface HeaderProps {
@@ -33,6 +33,27 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             >
               <MessageSquare className="h-4 w-4" />
               <span className="hidden sm:inline">Deep Think</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="math" 
+              className="flex items-center gap-1 data-[state=active]:bg-white data-[state=active]:text-brand-blue"
+            >
+              <Calculator className="h-4 w-4" />
+              <span className="hidden sm:inline">Math</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="code" 
+              className="flex items-center gap-1 data-[state=active]:bg-white data-[state=active]:text-brand-blue"
+            >
+              <Code className="h-4 w-4" />
+              <span className="hidden sm:inline">Code</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="research" 
+              className="flex items-center gap-1 data-[state=active]:bg-white data-[state=active]:text-brand-blue"
+            >
+              <BookOpen className="h-4 w-4" />
+              <span className="hidden sm:inline">Research</span>
             </TabsTrigger>
             <TabsTrigger 
               value="quiz" 

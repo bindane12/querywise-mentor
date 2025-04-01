@@ -12,6 +12,19 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState('chat');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Placeholder for new features
+  const FeaturePlaceholder = ({ title }: { title: string }) => (
+    <div className="bg-white h-full rounded-lg p-8 flex flex-col items-center justify-center">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">{title}</h2>
+      <p className="text-gray-600 text-center mb-6">
+        This feature is coming soon! We're currently working on it.
+      </p>
+      <Button onClick={() => setActiveTab('chat')}>
+        Return to Chat
+      </Button>
+    </div>
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 font-ovo">
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -45,7 +58,10 @@ const Index = () => {
             </Button>
             <h1 className="text-2xl font-semibold text-gray-800">
               {activeTab === 'chat' ? 'Chat Assistant' : 
-               activeTab === 'deepthink' ? 'Deep Think' : 'Quiz Mode'}
+               activeTab === 'deepthink' ? 'Deep Think' : 
+               activeTab === 'math' ? 'Math Assistant' :
+               activeTab === 'code' ? 'Code Assistant' :
+               activeTab === 'research' ? 'Bin Research' : 'Quiz Mode'}
             </h1>
           </div>
           
@@ -54,10 +70,16 @@ const Index = () => {
               <ChatInterface />
             ) : activeTab === 'deepthink' ? (
               <DeepThinkInterface />
-            ) : (
+            ) : activeTab === 'quiz' ? (
               <div className="chat-container">
                 <QuizMode />
               </div>
+            ) : activeTab === 'math' ? (
+              <FeaturePlaceholder title="Math Assistant" />
+            ) : activeTab === 'code' ? (
+              <FeaturePlaceholder title="Code Assistant" />
+            ) : (
+              <FeaturePlaceholder title="Bin Research" />
             )}
           </div>
         </div>
