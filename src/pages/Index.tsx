@@ -1,6 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import ChatInterface from '@/components/ChatInterface';
 import DeepThinkInterface from '@/components/DeepThinkInterface';
@@ -13,15 +12,7 @@ import { useAuth } from '@/context/AuthContext';
 const Index = () => {
   const [activeTab, setActiveTab] = useState('chat');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, isLoading } = useAuth();
-  const navigate = useNavigate();
-
-  // Redirect to homepage if not logged in
-  useEffect(() => {
-    if (!isLoading && !user) {
-      navigate('/');
-    }
-  }, [user, isLoading, navigate]);
+  const { user } = useAuth();
 
   // Placeholder for new features
   const FeaturePlaceholder = ({ title }: { title: string }) => (
@@ -35,14 +26,6 @@ const Index = () => {
       </Button>
     </div>
   );
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white font-ovo">
