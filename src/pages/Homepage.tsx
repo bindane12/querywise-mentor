@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowRight } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const Homepage = () => {
@@ -17,103 +17,144 @@ const Homepage = () => {
     }
   }, [user, isLoading, navigate]);
 
+  const handleGetStarted = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      signIn();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
-      {/* Hero Section */}
-      <header className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <img src={logo} alt="BinesAI Logo" className="h-10" />
-          <h1 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent font-poppins">
-            BinesAI
-          </h1>
+      {/* Navigation Bar */}
+      <header className="container mx-auto px-4 py-6 flex justify-between items-center border-b border-gray-800">
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="AI Logo" className="h-8 w-auto" />
+          <h1 className="text-xl font-semibold text-white">BinesAI</h1>
         </div>
         
         <Button 
           onClick={signIn}
           variant="outline" 
-          className="bg-transparent border-white/20 hover:bg-white/10"
+          className="bg-transparent border border-gray-700 hover:bg-white/10 text-white"
           disabled={isLoading}
         >
           {isLoading ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
           ) : (
-            "Sign In with Google"
+            "Sign In"
           )}
         </Button>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-4">
-        <div className="max-w-4xl text-center">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-500 to-teal-400 bg-clip-text text-transparent">
-            Your Professional Learning Assistant
-          </h2>
-          <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-            Enhance your learning experience with our AI-powered educational tools. 
-            Chat, solve math problems, write code, conduct research, and test your knowledge.
-          </p>
+      {/* Hero Section */}
+      <main className="flex-1 flex flex-col">
+        <div className="container mx-auto px-4 py-16 md:py-24 flex flex-col md:flex-row items-center max-w-6xl">
+          {/* Left Column - Text Content */}
+          <div className="w-full md:w-1/2 space-y-6 md:pr-8">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+              Your Professional AI Learning Assistant
+            </h2>
+            
+            <p className="text-lg text-gray-300 mt-4 max-w-lg">
+              Enhance your knowledge with our advanced AI tools. Get accurate answers, solve problems, and learn faster with BinesAI.
+            </p>
+            
+            <div className="flex flex-wrap gap-4 pt-4">
+              <Button 
+                onClick={handleGetStarted}
+                size="lg" 
+                className="bg-white text-black hover:bg-gray-200 rounded-full px-8 flex items-center gap-2 text-base"
+              >
+                Get Started
+                <ArrowRight size={18} />
+              </Button>
+              
+              <Button 
+                onClick={() => navigate('/dashboard')}
+                size="lg" 
+                variant="outline"
+                className="border-gray-700 hover:bg-white/10 rounded-full px-8 text-base"
+              >
+                Explore Features
+              </Button>
+            </div>
+          </div>
           
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button 
-              onClick={signIn}
-              size="lg" 
-              className="bg-gradient-to-r from-violet-500 to-blue-500 hover:from-violet-600 hover:to-blue-600 text-white border-0"
-            >
-              Get Started
-            </Button>
-            <Button 
-              onClick={() => navigate('/dashboard')}
-              size="lg" 
-              variant="outline"
-              className="border-white/20 hover:bg-white/10"
-            >
-              Explore Features
-            </Button>
+          {/* Right Column - Visual Elements */}
+          <div className="hidden md:flex w-full md:w-1/2 justify-center mt-12 md:mt-0">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-2xl blur-3xl opacity-30"></div>
+              <div className="glass-card bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl relative">
+                <div className="flex items-start gap-4 mb-8">
+                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">AI</span>
+                  </div>
+                  <div className="bg-gray-800 p-4 rounded-lg rounded-tl-none max-w-sm">
+                    <p className="text-gray-200">
+                      Hello! I'm your AI assistant. How can I help you learn today?
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 justify-end">
+                  <div className="bg-gray-800 p-4 rounded-lg rounded-tr-none max-w-sm">
+                    <p className="text-gray-200">
+                      Can you explain how neural networks work?
+                    </p>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">U</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Features Section */}
+        <section className="bg-gray-900 py-20 px-4">
+          <div className="container mx-auto">
+            <h3 className="text-2xl md:text-3xl font-bold mb-12 text-center">Our Capabilities</h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  title: "AI Chat Assistant",
+                  description: "Get instant answers and educational guidance on any topic."
+                },
+                {
+                  title: "Deep Think Mode",
+                  description: "Tackle complex problems with advanced reasoning capabilities."
+                },
+                {
+                  title: "Math Helper",
+                  description: "Solve equations and understand concepts step-by-step."
+                },
+                {
+                  title: "Code Assistant",
+                  description: "Learn programming concepts and debug your code."
+                },
+                {
+                  title: "Research Aid",
+                  description: "Access quality information and academic resources."
+                },
+                {
+                  title: "Quiz Mode",
+                  description: "Test your knowledge and receive detailed explanations."
+                }
+              ].map((feature, index) => (
+                <div key={index} className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-gray-800 hover:border-blue-500/30 transition-all">
+                  <h4 className="text-xl font-semibold mb-3 text-blue-400">{feature.title}</h4>
+                  <p className="text-gray-300">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
 
-      {/* Features Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <h3 className="text-3xl font-bold mb-12 text-center">Powerful Features</h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "AI Chat Assistant",
-                description: "Engage with our AI assistant for quick answers and educational guidance."
-              },
-              {
-                title: "Deep Think Mode",
-                description: "Tackle complex problems with our advanced DeepSeek-powered reasoning engine."
-              },
-              {
-                title: "Math Assistant",
-                description: "Solve mathematical equations and understand concepts with step-by-step explanations."
-              },
-              {
-                title: "Code Assistant",
-                description: "Get help with programming, debug code, and learn coding best practices."
-              },
-              {
-                title: "Research Tool",
-                description: "Access quality information and academic resources for your research needs."
-              },
-              {
-                title: "Quiz Mode",
-                description: "Test your knowledge and receive detailed explanations to enhance understanding."
-              }
-            ].map((feature, index) => (
-              <div key={index} className="bg-gray-900 rounded-xl p-6 border border-gray-800 hover:border-blue-500/50 transition-all">
-                <h4 className="text-xl font-bold mb-3 text-blue-400">{feature.title}</h4>
-                <p className="text-gray-300">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <footer className="border-t border-gray-800 py-8 text-center text-sm text-gray-400">
+      <footer className="border-t border-gray-800 py-8 text-center text-sm text-gray-500">
         <div className="container mx-auto">
           <p>© {new Date().getFullYear()} BinesAI · Your Professional Learning Assistant</p>
         </div>
