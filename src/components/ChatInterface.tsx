@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Upload, Bot, User, Smile, Paperclip, Image } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -30,7 +29,7 @@ const ChatInterface: React.FC = () => {
   const { toast } = useToast();
   const [conversationHistory, setConversationHistory] = useState<GeminiMessage[]>([
     {
-      role: "assistant",
+      role: "model",
       parts: [{ text: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?" }]
     }
   ]);
@@ -60,7 +59,6 @@ const ChatInterface: React.FC = () => {
     };
     setMessages((prev) => [...prev, userMessage]);
 
-    // Add user message to conversation history
     const userGeminiMessage: GeminiMessage = {
       role: "user",
       parts: [{ text: input }]
@@ -81,9 +79,8 @@ const ChatInterface: React.FC = () => {
         timestamp: new Date(),
       };
       
-      // Add AI response to conversation history
       const aiGeminiMessage: GeminiMessage = {
-        role: "assistant",
+        role: "model",
         parts: [{ text: aiResponseText }]
       };
       
@@ -123,9 +120,8 @@ const ChatInterface: React.FC = () => {
       timestamp: new Date(),
     };
     
-    // Add document summary to conversation history
     const aiGeminiMessage: GeminiMessage = {
-      role: "assistant",
+      role: "model",
       parts: [{ text: aiMessage.content }]
     };
     
