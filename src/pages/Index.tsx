@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import ChatInterface from '@/components/ChatInterface';
 import DeepThinkInterface from '@/components/DeepThinkInterface';
@@ -7,32 +8,50 @@ import QuizMode from '@/components/QuizMode';
 import Sidebar from '@/components/Sidebar';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('chat');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect to homepage if not logged in
+  useEffect(() => {
+    if (!isLoading && !user) {
+      navigate('/');
+    }
+  }, [user, isLoading, navigate]);
 
   // Placeholder for new features
   const FeaturePlaceholder = ({ title }: { title: string }) => (
-    <div className="bg-white h-full rounded-lg p-8 flex flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">{title}</h2>
-      <p className="text-gray-600 text-center mb-6">
+    <div className="bg-gray-900 h-full rounded-lg p-8 flex flex-col items-center justify-center">
+      <h2 className="text-2xl font-bold text-white mb-4">{title}</h2>
+      <p className="text-gray-300 text-center mb-6">
         This feature is coming soon! We're currently working on it.
       </p>
-      <Button onClick={() => setActiveTab('chat')}>
+      <Button onClick={() => setActiveTab('chat')} className="bg-blue-600 hover:bg-blue-700">
         Return to Chat
       </Button>
     </div>
   );
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 font-ovo">
+    <div className="min-h-screen flex flex-col bg-black text-white font-ovo">
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
       
       {/* Sidebar overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/20 z-20 md:hidden" 
+          className="fixed inset-0 bg-black/50 z-20 md:hidden" 
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -51,12 +70,12 @@ const Index = () => {
               variant="ghost" 
               size="icon" 
               onClick={() => setSidebarOpen(true)}
-              className="mr-2"
+              className="mr-2 hover:bg-gray-800"
               aria-label="Open sidebar"
             >
               <Menu className="h-5 w-5" />
             </Button>
-            <h1 className="text-2xl font-semibold text-gray-800">
+            <h1 className="text-2xl font-semibold text-white">
               {activeTab === 'chat' ? 'Chat Assistant' : 
                activeTab === 'deepthink' ? 'Deep Think' : 
                activeTab === 'math' ? 'Math Assistant' :
@@ -71,7 +90,7 @@ const Index = () => {
             ) : activeTab === 'deepthink' ? (
               <DeepThinkInterface />
             ) : activeTab === 'quiz' ? (
-              <div className="chat-container">
+              <div className="chat-container bg-gray-900">
                 <QuizMode />
               </div>
             ) : activeTab === 'math' ? (
@@ -85,7 +104,7 @@ const Index = () => {
         </div>
       </main>
       
-      <footer className="border-t py-4 text-center text-sm text-muted-foreground bg-white">
+      <footer className="border-t border-gray-800 py-4 text-center text-sm text-gray-400 bg-gray-900">
         <div className="container mx-auto">
           <p>© {new Date().getFullYear()} BinesAI · Your Professional Learning Assistant</p>
         </div>

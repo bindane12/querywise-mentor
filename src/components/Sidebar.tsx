@@ -1,11 +1,13 @@
 
 import React from 'react';
-import { BookOpen, X, MessageSquare, FileQuestion, Calculator, Code } from 'lucide-react';
+import { BookOpen, X, MessageSquare, FileQuestion, Calculator, Code, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/context/AuthContext';
+import logo from '../assets/logo.png';
 
 type ChatHistoryItem = {
   id: string;
@@ -21,6 +23,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActiveTab }) => {
+  const { signOut, user } = useAuth();
+  
   const mockChatHistory: ChatHistoryItem[] = [
     { id: '1', title: 'Learning Python Basics', timestamp: new Date(Date.now() - 3600000) },
     { id: '2', title: 'Machine Learning Concepts', timestamp: new Date(Date.now() - 86400000) },
@@ -29,24 +33,61 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
   
   return (
     <div className={cn(
-      "fixed inset-y-0 left-0 z-30 w-72 bg-white border-r shadow-lg transform transition-transform duration-300 ease-in-out font-ovo",
+      "fixed inset-y-0 left-0 z-30 w-72 bg-gray-900 border-r border-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out font-ovo",
       isOpen ? "translate-x-0" : "-translate-x-full"
     )}>
-      <div className="flex items-center justify-between p-4 border-b">
-        <h2 className="text-lg font-semibold text-brand-purple">BinesAI</h2>
-        <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-gray-100">
+      <div className="flex items-center justify-between p-4 border-b border-gray-800">
+        <div className="flex items-center gap-2">
+          <img src={logo} alt="BinesAI Logo" className="h-8" />
+          <h2 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">BinesAI</h2>
+        </div>
+        <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-gray-800 text-gray-400">
           <X className="h-5 w-5" />
         </Button>
       </div>
       
+      {user && (
+        <div className="p-4 border-b border-gray-800">
+          <div className="flex items-center gap-3 mb-2">
+            {user.user_metadata?.avatar_url ? (
+              <img 
+                src={user.user_metadata.avatar_url} 
+                alt="User avatar" 
+                className="h-8 w-8 rounded-full"
+              />
+            ) : (
+              <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
+                <span className="text-white font-medium">
+                  {(user.user_metadata?.name || 'User').charAt(0)}
+                </span>
+              </div>
+            )}
+            <div className="flex-1 overflow-hidden">
+              <p className="text-sm font-medium text-gray-200 truncate">
+                {user.user_metadata?.name || user.email || 'User'}
+              </p>
+              <p className="text-xs text-gray-400 truncate">{user.email}</p>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={signOut}
+              className="hover:bg-gray-800 text-gray-400"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+      
       <div className="p-4">
-        <h3 className="mb-2 text-sm font-medium text-gray-500">FEATURES</h3>
+        <h3 className="mb-2 text-sm font-medium text-gray-400">FEATURES</h3>
         <div className="space-y-1">
           <Button 
             variant="ghost" 
             className={cn(
-              "w-full justify-start",
-              activeTab === 'chat' ? "bg-brand-blue/10 text-brand-blue" : ""
+              "w-full justify-start text-gray-300 hover:bg-gray-800",
+              activeTab === 'chat' ? "bg-blue-900/50 text-blue-400" : ""
             )}
             onClick={() => setActiveTab('chat')}
           >
@@ -56,8 +97,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
           <Button 
             variant="ghost" 
             className={cn(
-              "w-full justify-start",
-              activeTab === 'deepthink' ? "bg-purple-700/10 text-purple-700" : ""
+              "w-full justify-start text-gray-300 hover:bg-gray-800",
+              activeTab === 'deepthink' ? "bg-purple-900/50 text-purple-400" : ""
             )}
             onClick={() => setActiveTab('deepthink')}
           >
@@ -67,8 +108,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
           <Button 
             variant="ghost" 
             className={cn(
-              "w-full justify-start",
-              activeTab === 'math' ? "bg-brand-teal/10 text-brand-teal" : ""
+              "w-full justify-start text-gray-300 hover:bg-gray-800",
+              activeTab === 'math' ? "bg-teal-900/50 text-teal-400" : ""
             )}
             onClick={() => setActiveTab('math')}
           >
@@ -78,8 +119,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
           <Button 
             variant="ghost" 
             className={cn(
-              "w-full justify-start",
-              activeTab === 'code' ? "bg-brand-blue/10 text-brand-blue" : ""
+              "w-full justify-start text-gray-300 hover:bg-gray-800",
+              activeTab === 'code' ? "bg-blue-900/50 text-blue-400" : ""
             )}
             onClick={() => setActiveTab('code')}
           >
@@ -89,8 +130,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
           <Button 
             variant="ghost" 
             className={cn(
-              "w-full justify-start",
-              activeTab === 'research' ? "bg-purple-700/10 text-purple-700" : ""
+              "w-full justify-start text-gray-300 hover:bg-gray-800",
+              activeTab === 'research' ? "bg-purple-900/50 text-purple-400" : ""
             )}
             onClick={() => setActiveTab('research')}
           >
@@ -100,8 +141,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
           <Button 
             variant="ghost" 
             className={cn(
-              "w-full justify-start",
-              activeTab === 'quiz' ? "bg-brand-blue/10 text-brand-blue" : ""
+              "w-full justify-start text-gray-300 hover:bg-gray-800",
+              activeTab === 'quiz' ? "bg-blue-900/50 text-blue-400" : ""
             )}
             onClick={() => setActiveTab('quiz')}
           >
@@ -111,37 +152,37 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
         </div>
       </div>
       
-      <Separator />
+      <Separator className="bg-gray-800" />
       
       <div className="p-4">
-        <h3 className="mb-2 text-sm font-medium text-gray-500">AI MODELS (BETA)</h3>
+        <h3 className="mb-2 text-sm font-medium text-gray-400">AI MODELS (BETA)</h3>
         <div className="space-y-1">
-          <div className="px-3 py-2 text-sm flex justify-between items-center">
+          <div className="px-3 py-2 text-sm flex justify-between items-center text-gray-300">
             <span>Gemini Flash 2.0</span>
-            <Badge variant="outline" className="text-green-600">Active</Badge>
+            <Badge variant="outline" className="text-green-400 border-green-400/50">Active</Badge>
           </div>
-          <div className="px-3 py-2 text-sm flex justify-between items-center">
+          <div className="px-3 py-2 text-sm flex justify-between items-center text-gray-300">
             <span>Deepseek V3</span>
-            <Badge variant="outline" className="text-gray-400">Not Available</Badge>
+            <Badge variant="outline" className="text-gray-400 border-gray-500/50">Not Available</Badge>
           </div>
-          <div className="px-3 py-2 text-sm flex justify-between items-center">
+          <div className="px-3 py-2 text-sm flex justify-between items-center text-gray-300">
             <span>Grok 2</span>
-            <Badge variant="outline" className="text-gray-400">Not Available</Badge>
+            <Badge variant="outline" className="text-gray-400 border-gray-500/50">Not Available</Badge>
           </div>
         </div>
       </div>
       
-      <Separator />
+      <Separator className="bg-gray-800" />
       
       <div className="p-4 flex-1 overflow-hidden">
-        <h3 className="mb-2 text-sm font-medium text-gray-500">RECENT CHATS</h3>
-        <ScrollArea className="h-[calc(100vh-290px)]">
+        <h3 className="mb-2 text-sm font-medium text-gray-400">RECENT CHATS</h3>
+        <ScrollArea className="h-[calc(100vh-420px)]">
           <div className="space-y-1">
             {mockChatHistory.map((chat) => (
               <Button 
                 key={chat.id}
                 variant="ghost" 
-                className="w-full justify-start"
+                className="w-full justify-start text-gray-300 hover:bg-gray-800"
               >
                 <div className="flex flex-col items-start overflow-hidden">
                   <span className="truncate w-full text-left">{chat.title}</span>
