@@ -7,7 +7,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/AuthContext';
-import logo from '../assets/logo.png';
 
 type ChatHistoryItem = {
   id: string;
@@ -38,7 +37,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
     )}>
       <div className="flex items-center justify-between p-4 border-b border-gray-800">
         <div className="flex items-center gap-2">
-          <img src={logo} alt="BinesAI Logo" className="h-8" />
+          <div className="h-8 w-8 bg-blue-600 rounded-full flex items-center justify-center">
+            <span className="font-patrick-hand text-xl text-white font-bold">B</span>
+          </div>
           <h2 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">BinesAI</h2>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-gray-800 text-gray-400">

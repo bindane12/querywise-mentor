@@ -65,6 +65,7 @@ const config = {
       fontFamily: {
         'ovo': ['Ovo', 'serif'],
         'poppins': ['Poppins', 'sans-serif'],
+        'patrick-hand': ['"Patrick Hand"', 'cursive'],
       },
       keyframes: {
         "accordion-down": {

@@ -4,7 +4,6 @@ import { MessageSquare, FileQuestion, Calculator, Code, BookOpen, LogOut } from 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
-import logo from '../assets/logo.png';
 
 interface HeaderProps {
   activeTab: string;
@@ -18,7 +17,9 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
     <header className="border-b border-gray-800 bg-gray-900 p-4 shadow-sm sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <img src={logo} alt="BinesAI Logo" className="h-8" />
+          <div className="h-8 w-8 bg-blue-600 rounded-full flex items-center justify-center">
+            <span className="font-patrick-hand text-xl text-white font-bold">B</span>
+          </div>
           <h1 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent font-poppins">
             BinesAI
           </h1>

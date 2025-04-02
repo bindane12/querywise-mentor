@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Loader2, ArrowRight } from 'lucide-react';
-import logo from '../assets/logo.png';
 
 const Homepage = () => {
   const { user, isLoading, signIn } = useAuth();
@@ -18,11 +17,7 @@ const Homepage = () => {
   }, [user, isLoading, navigate]);
 
   const handleGetStarted = () => {
-    if (user) {
-      navigate('/dashboard');
-    } else {
-      signIn();
-    }
+    navigate('/dashboard');
   };
 
   return (
@@ -30,7 +25,9 @@ const Homepage = () => {
       {/* Navigation Bar */}
       <header className="container mx-auto px-4 py-6 flex justify-between items-center border-b border-gray-800">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="AI Logo" className="h-8 w-auto" />
+          <div className="h-10 w-10 bg-blue-600 rounded-full flex items-center justify-center">
+            <span className="font-patrick-hand text-2xl text-white font-bold">B</span>
+          </div>
           <h1 className="text-xl font-semibold text-white">BinesAI</h1>
         </div>
         
@@ -89,7 +86,7 @@ const Homepage = () => {
               <div className="glass-card bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl relative">
                 <div className="flex items-start gap-4 mb-8">
                   <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">AI</span>
+                    <span className="text-white text-xs font-bold font-patrick-hand">B</span>
                   </div>
                   <div className="bg-gray-800 p-4 rounded-lg rounded-tl-none max-w-sm">
                     <p className="text-gray-200">
