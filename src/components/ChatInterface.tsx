@@ -1,5 +1,6 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Upload, Bot, User, Smile, Paperclip, Image } from 'lucide-react';
+import { Send, Upload, Bot, User, Smile, Paperclip, Image, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
@@ -129,8 +130,33 @@ const ChatInterface: React.FC = () => {
     setConversationHistory([...conversationHistory, aiGeminiMessage]);
   };
 
+  const handleNewChat = () => {
+    setMessages([{
+      id: '1',
+      content: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?",
+      sender: 'ai',
+      timestamp: new Date(),
+    }]);
+    setConversationHistory([{
+      role: "model",
+      parts: [{ text: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?" }]
+    }]);
+    setInput('');
+  };
+
   return (
     <div className="chat-container bg-white border border-gray-100">
+      <div className="flex justify-between items-center p-2 border-b border-gray-100">
+        <div></div>
+        <Button
+          onClick={handleNewChat}
+          className="bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 flex items-center gap-2"
+          size="sm"
+        >
+          <PlusCircle className="h-4 w-4" />
+          New Chat
+        </Button>
+      </div>
       <div className="chat-messages">
         {messages.map((message) => (
           <div

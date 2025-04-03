@@ -8,12 +8,6 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/context/AuthContext';
 
-type ChatHistoryItem = {
-  id: string;
-  title: string;
-  timestamp: Date;
-};
-
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -23,12 +17,6 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActiveTab }) => {
   const { signOut, user } = useAuth();
-  
-  const mockChatHistory: ChatHistoryItem[] = [
-    { id: '1', title: 'Learning Python Basics', timestamp: new Date(Date.now() - 3600000) },
-    { id: '2', title: 'Machine Learning Concepts', timestamp: new Date(Date.now() - 86400000) },
-    { id: '3', title: 'Statistical Analysis Help', timestamp: new Date(Date.now() - 172800000) },
-  ];
   
   return (
     <div className={cn(
@@ -178,21 +166,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
       <div className="p-4 flex-1 overflow-hidden">
         <h3 className="mb-2 text-sm font-medium text-gray-400">RECENT CHATS</h3>
         <ScrollArea className="h-[calc(100vh-420px)]">
-          <div className="space-y-1">
-            {mockChatHistory.map((chat) => (
-              <Button 
-                key={chat.id}
-                variant="ghost" 
-                className="w-full justify-start text-gray-300 hover:bg-gray-800"
-              >
-                <div className="flex flex-col items-start overflow-hidden">
-                  <span className="truncate w-full text-left">{chat.title}</span>
-                  <span className="text-xs text-gray-500">
-                    {chat.timestamp.toLocaleDateString()}
-                  </span>
-                </div>
-              </Button>
-            ))}
+          <div className="flex flex-col items-center justify-center text-center py-8 text-gray-400">
+            <p className="text-sm">No recent chats yet</p>
           </div>
         </ScrollArea>
       </div>

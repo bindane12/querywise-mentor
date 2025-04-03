@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Check, X, ChevronRight, RefreshCw, Trophy, Loader2 } from 'lucide-react';
+import { Check, X, ChevronRight, RefreshCw, Trophy, Loader2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -245,13 +245,27 @@ const QuizMode: React.FC = () => {
           
           <Progress value={scorePercentage} className="h-2 mb-6" />
           
-          <Button 
-            onClick={() => generateQuizQuestions()}
-            className="w-full"
-          >
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Try Again
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={() => generateQuizQuestions()}
+              className="flex-1"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Try Again
+            </Button>
+            
+            <Button 
+              onClick={() => {
+                const newTopic = quizTopics.find(topic => topic.id !== selectedTopic)?.id || 'general';
+                setSelectedTopic(newTopic);
+              }}
+              variant="outline"
+              className="flex-1"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              New Questions
+            </Button>
+          </div>
         </div>
       </div>
     );

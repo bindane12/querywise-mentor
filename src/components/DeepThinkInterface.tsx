@@ -72,12 +72,47 @@ const DeepThinkInterface: React.FC = () => {
   };
 
   const formatMessage = (content: string) => {
-    // Convert **text** to bold
-    return content.split(/(\*\*.*?\*\*)/g).map((part, i) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={i}>{part.slice(2, -2)}</strong>;
+    // First handle ### as bold headers
+    let formattedContent = content.replace(/###\s*(.*?)(\n|$)/g, '<strong>$1</strong>\n');
+    
+    // Convert text with ** to bold
+    formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // Handle lists
+    const listItems = formattedContent.split(/\n\s*-\s*/);
+    
+    if (listItems.length > 1) {
+      // We have list items
+      return (
+        <>
+          {listItems[0].split(/<strong>|<\/strong>/).map((part, i) => {
+            if (i % 2 === 1) {
+              return <strong key={`p-${i}`}>{part}</strong>;
+            }
+            return <span key={`p-${i}`} dangerouslySetInnerHTML={{ __html: part.replace(/\n/g, '<br/>') }} />;
+          })}
+          <ul className="list-disc list-inside mt-2">
+            {listItems.slice(1).map((item, idx) => (
+              <li key={idx} className="mb-1">
+                {item.split(/<strong>|<\/strong>/).map((part, i) => {
+                  if (i % 2 === 1) {
+                    return <strong key={`li-${idx}-${i}`}>{part}</strong>;
+                  }
+                  return <span key={`li-${idx}-${i}`} dangerouslySetInnerHTML={{ __html: part.replace(/\n/g, '<br/>') }} />;
+                })}
+              </li>
+            ))}
+          </ul>
+        </>
+      );
+    }
+    
+    // No list, just handle the formatting for bold
+    return formattedContent.split(/<strong>|<\/strong>/).map((part, i) => {
+      if (i % 2 === 1) {
+        return <strong key={i}>{part}</strong>;
       }
-      return <span key={i}>{part}</span>;
+      return <span key={i} dangerouslySetInnerHTML={{ __html: part.replace(/\n/g, '<br/>') }} />;
     });
   };
 

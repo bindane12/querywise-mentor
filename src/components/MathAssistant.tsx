@@ -27,12 +27,23 @@ const MathAssistant = () => {
         // Check if it's a simple arithmetic operation
         if (/^[\d\s\+\-\*\/\(\)\.\^]+$/.test(input)) {
           try {
+            // Replace ^ with ** for exponentiation
+            const sanitizedInput = input.replace(/\^/g, '**');
             // Use Function constructor to evaluate mathematical expressions
             // This is safer than eval() but still only for trusted input
-            const result = Function(`'use strict'; return (${input})`)();
-            answer = `${result}`;
+            const result = Function(`'use strict'; return (${sanitizedInput})`)();
+            
+            // Handle NaN and Infinity
+            if (isNaN(result)) {
+              answer = "The expression resulted in NaN (Not a Number). Please check your formula.";
+            } else if (!isFinite(result)) {
+              answer = "The expression resulted in Infinity. Please check for division by zero or other mathematical errors.";
+            } else {
+              // Format the result nicely
+              answer = Number.isInteger(result) ? String(result) : result.toFixed(4).replace(/\.?0+$/, '');
+            }
           } catch (error) {
-            answer = "I couldn't calculate that expression. Please check your formula.";
+            answer = "I couldn't calculate that expression. Please check your formula for errors.";
           }
         } else {
           // For non-arithmetic questions, provide helpful responses
@@ -65,8 +76,8 @@ const MathAssistant = () => {
     const examples = [
       { text: "Calculate: 125 * 37", value: "125 * 37" },
       { text: "Calculate: (15 + 3) / 2", value: "(15 + 3) / 2" },
-      { text: "Help with derivatives", value: "How do I calculate the derivative of x²?" },
-      { text: "Explain integration", value: "Explain how to integrate 2x" }
+      { text: "Calculate: 2^3", value: "2^3" },
+      { text: "Help with derivatives", value: "How do I calculate the derivative of x²?" }
     ];
 
     return (
