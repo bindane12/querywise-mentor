@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, RefreshCw, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -141,7 +142,7 @@ const DeepThinkInterface: React.FC = () => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Ask a complex question for deep thinking..."
-          className="flex-1 min-h-[100px] resize-none text-gray-800"
+          className="flex-1 min-h-[100px] resize-none text-white" 
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
