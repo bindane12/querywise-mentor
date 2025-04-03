@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Upload, Bot, User, Smile, Paperclip, Image, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -230,7 +229,7 @@ const ChatInterface: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask a question or upload a document..."
-              className="min-h-10 flex-1 resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent"
+              className="min-h-10 flex-1 resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-gray-800"
             />
             
             <div className="flex gap-1">

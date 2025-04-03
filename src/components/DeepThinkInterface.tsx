@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, RefreshCw, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -46,13 +45,10 @@ const DeepThinkInterface: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Prepare the message history for the API
       const messageHistory: Message[] = messages.slice(-5).concat(userMessage);
       
-      // Call the Deepseek API
       const response = await generateDeepseekResponse(messageHistory);
       
-      // Add the response to our messages
       const assistantMessage: Message = {
         role: 'assistant',
         content: response
@@ -72,17 +68,13 @@ const DeepThinkInterface: React.FC = () => {
   };
 
   const formatMessage = (content: string) => {
-    // First handle ### as bold headers
     let formattedContent = content.replace(/###\s*(.*?)(\n|$)/g, '<strong>$1</strong>\n');
     
-    // Convert text with ** to bold
     formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-    // Handle lists
     const listItems = formattedContent.split(/\n\s*-\s*/);
     
     if (listItems.length > 1) {
-      // We have list items
       return (
         <>
           {listItems[0].split(/<strong>|<\/strong>/).map((part, i) => {
@@ -107,7 +99,6 @@ const DeepThinkInterface: React.FC = () => {
       );
     }
     
-    // No list, just handle the formatting for bold
     return formattedContent.split(/<strong>|<\/strong>/).map((part, i) => {
       if (i % 2 === 1) {
         return <strong key={i}>{part}</strong>;
@@ -150,7 +141,7 @@ const DeepThinkInterface: React.FC = () => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Ask a complex question for deep thinking..."
-          className="flex-1 min-h-[100px] resize-none"
+          className="flex-1 min-h-[100px] resize-none text-gray-800"
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
