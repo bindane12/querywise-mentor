@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import ChatInterface from '@/components/ChatInterface';
 import DeepThinkInterface from '@/components/DeepThinkInterface';
 import QuizMode from '@/components/QuizMode';
+import MathAssistant from '@/components/MathAssistant';
 import Sidebar from '@/components/Sidebar';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -77,7 +78,7 @@ const Index = () => {
                 <QuizMode />
               </div>
             ) : activeTab === 'math' ? (
-              <FeaturePlaceholder title="Math Assistant" />
+              <MathAssistant />
             ) : activeTab === 'code' ? (
               <FeaturePlaceholder title="Code Assistant" />
             ) : (
