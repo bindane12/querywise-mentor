@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Upload, Bot, User, Smile, Paperclip, Image, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -130,17 +131,25 @@ const ChatInterface: React.FC = () => {
   };
 
   const handleNewChat = () => {
-    setMessages([{
-      id: '1',
+    // Implement actual new chat functionality
+    const initialMessage = {
+      id: Date.now().toString(),
       content: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?",
-      sender: 'ai',
+      sender: 'ai' as const,
       timestamp: new Date(),
-    }]);
+    };
+    
+    setMessages([initialMessage]);
     setConversationHistory([{
       role: "model",
-      parts: [{ text: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?" }]
+      parts: [{ text: initialMessage.content }]
     }]);
     setInput('');
+    
+    toast({
+      title: "New Conversation Started",
+      description: "Your previous conversation has been cleared.",
+    });
   };
 
   return (

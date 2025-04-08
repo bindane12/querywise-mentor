@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MessageSquare, FileQuestion, Calculator, Code, BookOpen, LogOut } from 'lucide-react';
+import { MessageSquare, Code, BookOpen, LogOut } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
@@ -44,13 +44,6 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
                 <span className="hidden sm:inline">Deep Think</span>
               </TabsTrigger>
               <TabsTrigger 
-                value="math" 
-                className="flex items-center gap-1 text-gray-300 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-              >
-                <Calculator className="h-4 w-4" />
-                <span className="hidden sm:inline">Math</span>
-              </TabsTrigger>
-              <TabsTrigger 
                 value="code" 
                 className="flex items-center gap-1 text-gray-300 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
               >
@@ -63,13 +56,6 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
               >
                 <BookOpen className="h-4 w-4" />
                 <span className="hidden sm:inline">Research</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="quiz" 
-                className="flex items-center gap-1 text-gray-300 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-              >
-                <FileQuestion className="h-4 w-4" />
-                <span className="hidden sm:inline">Quiz</span>
               </TabsTrigger>
             </TabsList>
           </Tabs>
