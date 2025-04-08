@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import Header from '@/components/Header';
 import ChatInterface from '@/components/ChatInterface';
 import DeepThinkInterface from '@/components/DeepThinkInterface';
-import QuizMode from '@/components/QuizMode';
-import MathAssistant from '@/components/MathAssistant';
 import Sidebar from '@/components/Sidebar';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -62,9 +60,8 @@ const Index = () => {
             <h1 className="text-2xl font-semibold text-white">
               {activeTab === 'chat' ? 'Chat Assistant' : 
                activeTab === 'deepthink' ? 'Deep Think' : 
-               activeTab === 'math' ? 'Math Assistant' :
                activeTab === 'code' ? 'Code Assistant' :
-               activeTab === 'research' ? 'Bin Research' : 'Quiz Mode'}
+               activeTab === 'research' ? 'Bin Research' : ''}
             </h1>
           </div>
           
@@ -73,12 +70,6 @@ const Index = () => {
               <ChatInterface />
             ) : activeTab === 'deepthink' ? (
               <DeepThinkInterface />
-            ) : activeTab === 'quiz' ? (
-              <div className="chat-container bg-gray-900">
-                <QuizMode />
-              </div>
-            ) : activeTab === 'math' ? (
-              <MathAssistant />
             ) : activeTab === 'code' ? (
               <FeaturePlaceholder title="Code Assistant" />
             ) : (

@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Loader2, ArrowRight } from 'lucide-react';
+import { Loader2, ArrowRight, MessageSquare, BarChart3, Clock, Users, Database, Brain } from 'lucide-react';
 
 const Homepage = () => {
   const { user, isLoading, signIn } = useAuth();
@@ -125,20 +125,12 @@ const Homepage = () => {
                   description: "Tackle complex problems with advanced reasoning capabilities."
                 },
                 {
-                  title: "Math Helper",
-                  description: "Solve equations and understand concepts step-by-step."
-                },
-                {
                   title: "Code Assistant",
                   description: "Learn programming concepts and debug your code."
                 },
                 {
                   title: "Research Aid",
                   description: "Access quality information and academic resources."
-                },
-                {
-                  title: "Quiz Mode",
-                  description: "Test your knowledge and receive detailed explanations."
                 }
               ].map((feature, index) => (
                 <div key={index} className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-gray-800 hover:border-blue-500/30 transition-all">
@@ -146,6 +138,95 @@ const Homepage = () => {
                   <p className="text-gray-300">{feature.description}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Business Solutions Section */}
+        <section className="bg-black py-20 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                  Digital Transformation for Your Business
+                </span>
+              </h2>
+              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+                BinesAI helps businesses digitalize their ecosystem with powerful AI solutions, from customer service to advanced analytics.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-gray-900 rounded-xl p-8 border border-gray-800 hover:border-blue-500/50 transition-all">
+                <div className="w-12 h-12 bg-blue-900/50 rounded-lg flex items-center justify-center mb-4">
+                  <MessageSquare className="h-6 w-6 text-blue-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">24/7 Customer Service</h3>
+                <p className="text-gray-300">
+                  Deploy intelligent chatbots that handle customer inquiries around the clock, providing instant responses and seamless handoffs to human agents when needed.
+                </p>
+              </div>
+              
+              <div className="bg-gray-900 rounded-xl p-8 border border-gray-800 hover:border-purple-500/50 transition-all">
+                <div className="w-12 h-12 bg-purple-900/50 rounded-lg flex items-center justify-center mb-4">
+                  <BarChart3 className="h-6 w-6 text-purple-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">Data Analysis</h3>
+                <p className="text-gray-300">
+                  Transform raw data into actionable insights with our AI-powered analytics tools, identifying trends and opportunities that drive business growth.
+                </p>
+              </div>
+              
+              <div className="bg-gray-900 rounded-xl p-8 border border-gray-800 hover:border-teal-500/50 transition-all">
+                <div className="w-12 h-12 bg-teal-900/50 rounded-lg flex items-center justify-center mb-4">
+                  <Brain className="h-6 w-6 text-teal-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">Business Intelligence</h3>
+                <p className="text-gray-300">
+                  Make data-driven decisions with customized dashboards and predictive analytics that provide a competitive edge in your industry.
+                </p>
+              </div>
+              
+              <div className="bg-gray-900 rounded-xl p-8 border border-gray-800 hover:border-green-500/50 transition-all">
+                <div className="w-12 h-12 bg-green-900/50 rounded-lg flex items-center justify-center mb-4">
+                  <Clock className="h-6 w-6 text-green-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">Process Automation</h3>
+                <p className="text-gray-300">
+                  Streamline workflows and eliminate manual tasks with intelligent automation solutions that reduce errors and free up valuable employee time.
+                </p>
+              </div>
+              
+              <div className="bg-gray-900 rounded-xl p-8 border border-gray-800 hover:border-red-500/50 transition-all">
+                <div className="w-12 h-12 bg-red-900/50 rounded-lg flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-red-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">HR & Employee Experience</h3>
+                <p className="text-gray-300">
+                  Enhance recruitment, onboarding, and employee engagement with AI tools that personalize the employee experience and optimize talent management.
+                </p>
+              </div>
+              
+              <div className="bg-gray-900 rounded-xl p-8 border border-gray-800 hover:border-orange-500/50 transition-all">
+                <div className="w-12 h-12 bg-orange-900/50 rounded-lg flex items-center justify-center mb-4">
+                  <Database className="h-6 w-6 text-orange-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">Data Integration</h3>
+                <p className="text-gray-300">
+                  Connect disparate systems and data sources into a cohesive ecosystem that provides a 360-degree view of your business operations.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-16 text-center">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-full px-8 py-6 text-base font-medium"
+                onClick={handleGetStarted}
+              >
+                Transform Your Business Today
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
             </div>
           </div>
         </section>

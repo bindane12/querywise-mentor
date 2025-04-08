@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BookOpen, X, MessageSquare, FileQuestion, Calculator, Code, LogOut } from 'lucide-react';
+import { BookOpen, X, MessageSquare, Code, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -98,17 +98,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
             variant="ghost" 
             className={cn(
               "w-full justify-start text-gray-300 hover:bg-gray-800",
-              activeTab === 'math' ? "bg-teal-900/50 text-teal-400" : ""
-            )}
-            onClick={() => setActiveTab('math')}
-          >
-            <Calculator className="mr-2 h-4 w-4" />
-            Math Assistant
-          </Button>
-          <Button 
-            variant="ghost" 
-            className={cn(
-              "w-full justify-start text-gray-300 hover:bg-gray-800",
               activeTab === 'code' ? "bg-blue-900/50 text-blue-400" : ""
             )}
             onClick={() => setActiveTab('code')}
@@ -127,17 +116,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
             <BookOpen className="mr-2 h-4 w-4" />
             Bin Research
           </Button>
-          <Button 
-            variant="ghost" 
-            className={cn(
-              "w-full justify-start text-gray-300 hover:bg-gray-800",
-              activeTab === 'quiz' ? "bg-blue-900/50 text-blue-400" : ""
-            )}
-            onClick={() => setActiveTab('quiz')}
-          >
-            <FileQuestion className="mr-2 h-4 w-4" />
-            Quiz Mode
-          </Button>
         </div>
       </div>
       
@@ -151,11 +129,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, activeTab, setActive
             <Badge variant="outline" className="text-green-400 border-green-400/50">Active</Badge>
           </div>
           <div className="px-3 py-2 text-sm flex justify-between items-center text-gray-300">
-            <span>Deepseek V3</span>
+            <span>GPT 4.0</span>
             <Badge variant="outline" className="text-gray-400 border-gray-500/50">Not Available</Badge>
           </div>
           <div className="px-3 py-2 text-sm flex justify-between items-center text-gray-300">
-            <span>Grok 2</span>
+            <span>Gemini 2.5 Experimental</span>
+            <Badge variant="outline" className="text-gray-400 border-gray-500/50">Not Available</Badge>
+          </div>
+          <div className="px-3 py-2 text-sm flex justify-between items-center text-gray-300">
+            <span>Llama 4 Scout</span>
             <Badge variant="outline" className="text-gray-400 border-gray-500/50">Not Available</Badge>
           </div>
         </div>
