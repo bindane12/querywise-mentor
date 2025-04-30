@@ -1,9 +1,10 @@
 
-import React from 'react';
-import { MessageSquare, Code, BookOpen, LogOut } from 'lucide-react';
+import React, { useState } from 'react';
+import { MessageSquare, Code, BookOpen, LogOut, UserRound } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
+import AccountDrawer from './AccountDrawer';
 
 interface HeaderProps {
   activeTab: string;
@@ -12,6 +13,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
   const { signOut, user } = useAuth();
+  const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState(false);
   
   return (
     <header className="border-b border-gray-800 bg-gray-900 p-4 shadow-sm sticky top-0 z-10">
@@ -61,18 +63,34 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
           </Tabs>
           
           {user && (
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={signOut}
-              className="ml-2 text-gray-300 hover:text-white hover:bg-gray-800"
-              title="Sign Out"
-            >
-              <LogOut className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => setIsAccountDrawerOpen(true)}
+                className="text-gray-300 hover:text-white hover:bg-gray-800"
+                title="Account"
+              >
+                <UserRound className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={signOut}
+                className="ml-1 text-gray-300 hover:text-white hover:bg-gray-800"
+                title="Sign Out"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
           )}
         </div>
       </div>
+      
+      <AccountDrawer 
+        isOpen={isAccountDrawerOpen}
+        onClose={() => setIsAccountDrawerOpen(false)}
+      />
     </header>
   );
 };

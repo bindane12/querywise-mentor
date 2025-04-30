@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Upload, Bot, User, Smile, Paperclip, Image, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -36,12 +35,15 @@ const ChatInterface: React.FC = () => {
   ]);
 
   const formatMessage = (text: string) => {
-    return text.split(/(\*\*.*?\*\*)/).map((part, index) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        const boldText = part.slice(2, -2);
-        return <strong key={index}>{boldText}</strong>;
+    // Enhanced regex to handle bold text with asterisks
+    // Will match text between pairs of asterisks (*) and make it bold
+    return text.split(/(\*[^*]+\*)/).map((part, index) => {
+      if (part.startsWith('*') && part.endsWith('*')) {
+        // Extract text between asterisks and make it bold
+        const boldText = part.slice(1, -1);
+        return <strong key={index} className="font-bold">{boldText}</strong>;
       }
-      return part;
+      return <span key={index}>{part}</span>;
     });
   };
 
@@ -131,7 +133,6 @@ const ChatInterface: React.FC = () => {
   };
 
   const handleNewChat = () => {
-    // Implement actual new chat functionality
     const initialMessage = {
       id: Date.now().toString(),
       content: "Hello! I'm BinesAI, your personal learning assistant powered by Gemini Flash 2.0. How can I help you today?",
